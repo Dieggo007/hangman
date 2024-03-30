@@ -1,8 +1,8 @@
 # frozen_string_literal: true
+
 require 'open-uri'
 
 class Dictionary
-
   attr_accessor :words
 
   def initialize(
@@ -20,11 +20,9 @@ class Dictionary
   end
 
   def get_random_word(min_length, max_length)
-    unless words.any? { |word| word.length >= min_length && word.length <= max_length }
-      raise ArgumentError, 'There is no word in the dictionary that meets the requirements'
-    end
+    filter_words = words.filter { |word| word.length >= min_length && word.length <= max_length }
+    raise ArgumentError, 'There is no word in the dictionary that meets the requirements' if filter_words.empty?
 
-    shuffle_words = words.shuffle
-    shuffle_words.find { |word| word.length >= min_length && word.length <= max_length }
+    filter_words.sample
   end
 end
